@@ -74,7 +74,7 @@ def distance(a, b):
     if len(a) != len(b):
         raise Exception("Wrong Dimension")
     ret = 0
-    for i in len(a):
+    for i in range(len(a)):
         ret += (a[i] - b[i]) ** 2
     return sqrt(ret)
 
