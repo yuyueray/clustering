@@ -1,8 +1,13 @@
 from collections import defaultdict
 from math import inf
+from math import sqrt
 import random
 import csv
-
+'''
+Author: Yue Yu
+Date: 9/29/2019
+K-means implementation
+'''
 
 def point_avg(points):
     """
@@ -11,7 +16,15 @@ def point_avg(points):
     
     Returns a new point which is the center of all the points.
     """
-    raise NotImplementedError()
+    if points is None or len(points) == 0:
+        raise Exception("No input array")
+    byAxis = zip(*points)
+    pNum = len(points)
+    ret = [0] * len(byAxis)
+    for i in len(byAxis):
+        ret[i] = (sum(byAxis[i]) / pNum)
+    return ret
+    
 
 
 def update_centers(data_set, assignments):
@@ -21,7 +34,20 @@ def update_centers(data_set, assignments):
     Compute the center for each of the assigned groups.
     Return `k` centers in a list
     """
-    raise NotImplementedError()
+    if data_set is None or len(data_set) == 0 or assignments is None or len(assignments) == 0:
+        raise Exception("Missing input")
+    if len(data_set) != len(assignments):
+        raise Exception("Input length does not match")
+    byCluster = {}
+    for (centroid, point) in zip(assignments, data_set):
+        if byCluster.has_key(centroid):
+            byCluster[centroid].append(point)
+        else:
+            byCluster[centroid] = point
+    ret = []
+    for key in byCluster.keys():
+        ret.append(point_avg(byCluster[key]))
+    return ret
 
 
 def assign_points(data_points, centers):
@@ -44,24 +70,48 @@ def distance(a, b):
     """
     Returns the Euclidean distance between a and b
     """
-    raise NotImplementedError()
-
+    if a is None or b is None:
+        raise Exception("Missing input")
+    if len(a) != len(b):
+        raise Exception("Wrong Dimension")
+    ret = 0
+    for i in len(a):
+        ret += (a[i] - b[i]) ** 2
+    return sqrt(ret)
 
 def generate_k(data_set, k):
     """
     Given `data_set`, which is an array of arrays,
     return a random set of k points from the data_set
     """
-    raise NotImplementedError()
-
+    if data_set is None or len(data_set) == 0 or k is None:
+        raise Exception("Missing input")
+    if k <= 0 or k > len(data_set):
+        raise Exception("K is invalid")
+    return random.sample(data_set, k)
 
 def get_list_from_dataset_file(dataset_file):
-    raise NotImplementedError()
-
+    if dataset_file is None:
+        raise Exception("Missing input")
+    ret = []
+    with open(dataset_file) as data:
+        dataset = csv.reader(data)
+        for row in dataset:
+            rowList = []
+            for col in row:
+                rowList.append(col)
+            ret.append(rowList)
+    return ret
 
 def cost_function(clustering):
-    raise NotImplementedError()
-
+    if clustering is None or len(clustering) == 0:
+        raise Exception("Missing input")
+    ret = 0
+    for (k, v) in clustering.items():
+        centroid = point_avg(v)
+        for point in v:
+            ret += distance(centroid, point) ** 2
+    return ret
 
 def k_means(dataset_file, k):
     dataset = get_list_from_dataset_file(dataset_file)
