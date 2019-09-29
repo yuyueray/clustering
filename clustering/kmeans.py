@@ -18,10 +18,11 @@ def point_avg(points):
     """
     if points is None or len(points) == 0:
         raise Exception("No input array")
-    byAxis = zip(*points)
     ret = [0] * len(points[0])
-    for i in range(len(points[0])):
-        ret[i] = (sum(byAxis[i]) / len(points))
+    i = 0
+    for j in zip(*points):
+        ret[i] = (sum(j) / len(points))
+        i += 1
     return ret
     
 
