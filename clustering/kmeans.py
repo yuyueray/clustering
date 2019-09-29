@@ -20,7 +20,7 @@ def point_avg(points):
         raise Exception("No input array")
     byAxis = zip(*points)
     ret = [0] * len(points[0])
-    for i in len(points[0]):
+    for i in range(len(points[0])):
         ret[i] = (sum(byAxis[i]) / len(points))
     return ret
     
