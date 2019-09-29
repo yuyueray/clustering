@@ -37,12 +37,9 @@ def update_centers(data_set, assignments):
         raise Exception("Missing input")
     if len(data_set) != len(assignments):
         raise Exception("Input length does not match")
-    byCluster = {}
+    byCluster = defaultdict(list)
     for (centroid, point) in zip(assignments, data_set):
-        if byCluster.has_key(centroid):
-            byCluster[centroid].append(point)
-        else:
-            byCluster[centroid] = point
+        byCluster[centroid].append(point)
     ret = []
     for key in byCluster.keys():
         ret.append(point_avg(byCluster[key]))
