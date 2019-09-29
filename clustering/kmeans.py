@@ -19,10 +19,9 @@ def point_avg(points):
     if points is None or len(points) == 0:
         raise Exception("No input array")
     byAxis = zip(*points)
-    pNum = len(points)
     ret = [0] * len(byAxis)
     for i in len(byAxis):
-        ret[i] = (sum(byAxis[i]) / pNum)
+        ret[i] = (sum(byAxis[i]) / len(points))
     return ret
     
 
@@ -99,7 +98,7 @@ def get_list_from_dataset_file(dataset_file):
         for row in dataset:
             rowList = []
             for col in row:
-                rowList.append(col)
+                rowList.append(int(col))
             ret.append(rowList)
     return ret
 
